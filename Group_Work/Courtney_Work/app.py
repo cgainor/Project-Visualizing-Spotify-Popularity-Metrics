@@ -63,7 +63,7 @@ spotify_df = pd.read_csv(spot_file)
 spotify_df = spotify_df.rename(columns={'id': "spotify_id"})
 
 # Insert csv data into empty database
-spotify_db.to_sql(name='spotifyTop2018', con=engine, if_exists='append', index=False)
+spotify_df.to_sql(name='spotifyTop2018', con=engine, if_exists='append', index=False)
 
 # Create route that renders index.html template
 @app.route("/")
