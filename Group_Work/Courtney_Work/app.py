@@ -58,12 +58,12 @@ engine.execute('CREATE TABLE spotify_songs (\
    time_signature INT);')
 
 # Open CSV using Pandas
-spot_file = "resources/top2018.csv"
-spotify_df = pd.read_csv(spot_file)
+spotify_csv = "resources/top2018.csv"
+spotify_df = pd.read_csv(spotify_csv)
 spotify_df = spotify_df.rename(columns={'id': "spotify_id"})
 
 # Insert csv data into empty database
-spotify_df.to_sql(name='spotifyTop2018', con=engine, if_exists='append', index=False)
+spotify_df.to_sql(name='spotify_songs', con=engine, if_exists='append', index=False)
 
 # Create route that renders index.html template
 @app.route("/")
