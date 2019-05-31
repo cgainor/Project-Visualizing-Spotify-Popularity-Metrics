@@ -9,6 +9,9 @@ from flask import (
 import sqlalchemy
 from sqlalchemy import create_engine
 import json
+import pandas as pd
+import pymysql
+pymysql.install_as_MySQLdb()
 
 #################################################
 # Flask Setup
@@ -54,7 +57,15 @@ engine.execute('CREATE TABLE spotify_songs (\
    duration_ms FLOAT,\
    time_signature INT);')
 
-# create route that renders index.html template
+# Open CSV using Pandas
+spot_file = "resources/top2018.csv"
+spotify_df = pd.read_csv(spot_file)
+spotify_df = spotify_df.rename(columns={'id': "spotify_id"})
+
+# Insert csv data into empty database
+spotify_db.to_sql(name='spotifyTop2018', con=engine, if_exists='append', index=False)
+
+# Create route that renders index.html template
 @app.route("/")
 def home():
     return render_template("index.html")
