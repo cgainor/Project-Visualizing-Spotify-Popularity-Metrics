@@ -1,11 +1,11 @@
-// function buildPlot() {
-//     /* data route */
-//   var url = "/api/pals";
-//   d3.json(url).then(function(response) {
+function buildPlot() {
+    /* data route */
+  var url = "/api/songs";
+  d3.json(url).then(function(response) {
 
-//     console.log(response);
+    console.log(response);
 
-//     var data = response;
+    var data = response;
 
 //     var layout = {
 //       scope: "usa",
@@ -28,7 +28,7 @@
 //     };
 
 //     Plotly.newPlot("plot", data, layout);
-//   });
-// }
+  });
+}
 
-// buildPlot();
+buildPlot();

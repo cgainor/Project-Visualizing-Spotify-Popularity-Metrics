@@ -65,31 +65,45 @@ spotify_df.to_sql(name='spotify_songs', con=engine, if_exists='append', index=Fa
 def home():
     return render_template("index.html")
 
+# Create route that returns jsonified data
 @app.route("/api/songs")
 def songs():
-    results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
+    # Query database
+    stuff = engine.execute("SELECT * FROM spotify_db.spotify_songs")
 
-    hover_text = [result[0] for result in results]
-    lat = [result[1] for result in results]
-    lon = [result[2] for result in results]
+    # Fetch data and store in variable
+    results = stuff.fetchall()
 
-    pet_data = [{
-        "type": "scattergeo",
-        "locationmode": "USA-states",
-        "lat": lat,
-        "lon": lon,
-        "text": hover_text,
-        "hoverinfo": "text",
-        "marker": {
-            "size": 50,
-            "line": {
-                "color": "rgb(8,8,8)",
-                "width": 1
-            },
+    # Empty list to store data
+    song_data = []
+
+    # Iterate through results and save data into dictionary
+    for result in results:
+        song_info = {
+            "id": result[0],
+            "spotify_id": result[1],
+            "name": result[2],
+            "artists": result[3],
+            "danceability": result[4],
+            "energy": result[5],
+            "key": result[6],
+            "loudness": result[7],
+            "mode": result[8],
+            "speechiness": result[9],
+            "acousticness": result[10],
+            "instrumentalness": result[11],
+            "liveness": result[12],
+            "valence": result[13],
+            "tempo": result[14],
+            "duration_ms": result[15],
+            "time_signature": result[16]
         }
-    }]
 
-    return jsonify(pet_data)
+        # Append dictionary to list
+        song_data.append(song_info)
+    
+    # Return jsonified 
+    return jsonify(song_data)
 
 if __name__ == "__main__":
     app.run(debug=True)
