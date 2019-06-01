@@ -65,5 +65,31 @@ spotify_df.to_sql(name='spotify_songs', con=engine, if_exists='append', index=Fa
 def home():
     return render_template("index.html")
 
+@app.route("/api/songs")
+def songs():
+    results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
+
+    hover_text = [result[0] for result in results]
+    lat = [result[1] for result in results]
+    lon = [result[2] for result in results]
+
+    pet_data = [{
+        "type": "scattergeo",
+        "locationmode": "USA-states",
+        "lat": lat,
+        "lon": lon,
+        "text": hover_text,
+        "hoverinfo": "text",
+        "marker": {
+            "size": 50,
+            "line": {
+                "color": "rgb(8,8,8)",
+                "width": 1
+            },
+        }
+    }]
+
+    return jsonify(pet_data)
+
 if __name__ == "__main__":
     app.run(debug=True)
