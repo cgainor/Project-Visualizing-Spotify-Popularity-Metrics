@@ -110,7 +110,7 @@ function updateToolTip(chosenYaxis, barGroup) {
 
     barGroup.on("mouseover", function (data) {
         toolTip.show(data);
-        })
+    })
         // onmouseout event
         .on("mouseout", function (data) {
             toolTip.hide(data);
@@ -130,7 +130,8 @@ function buildPlot() {
         var data = response;
 
         // Parse data
-        data.forEach(function(stuff) {
+        data.forEach(function (stuff) {
+            stuff.id = +stuff.id;
             stuff.danceability = +stuff.danceability;
             stuff.energy = +stuff.energy;
             stuff.key = +stuff.key;
@@ -144,48 +145,111 @@ function buildPlot() {
             stuff.tempo = +stuff.tempo;
             stuff.duration_ms = +stuff.duration_ms;
             stuff.time_signature = +stuff.time_signature;
-          });
+        });
 
         // Create x scale function
         var xBandScale = d3.scaleBand()
-            .domain(data.length*0.8)
+            .domain(data.length * 0.8)
             .range(0, width)
 
         // y scale function from earlier
         var yLinearScale = yScale(data, chosenYaxis)
 
         // Create initial axis functions
+        var bottomAxis = d3.axisBottom(xBandScale);
+        var leftAxis = d3.axisLeft(yLinearScale);
 
+        // Append x axis
+        var xAxis = chartGroup.append("g")
+            .classed("x-axis", true)
+            .attr("transform", `translate(0, ${height})`)
+            .call(bottomAxis);
 
-//         var canvas = d3.select("#plot1")
-//             .append(“svg”)
-//             .attr(“width”, width + margin.left + margin.right)
-//             .attr(“height”, height + margin.top + margin.bottom)
-//             .append(“g”)
-//             .attr(“transform”, “translate(” + margin.left + “, ” + margin.top + “) ”);
+        // Append y axis
+        chartGroup.append("g")
+            .call(leftAxis);
 
-//         //     var layout = {
-//         //       scope: "usa",
-//         //       title: "Pet Pals",
-//         //       showlegend: false,
-//         //       height: 600,
-//         //             // width: 980,
-//         //       geo: {
-//         //         scope: "usa",
-//         //         projection: {
-//         //           type: "albers usa"
-//         //         },
-//         //         showland: true,
-//         //         landcolor: "rgb(217, 217, 217)",
-//         //         subunitwidth: 1,
-//         //         countrywidth: 1,
-//         //         subunitcolor: "rgb(255,255,255)",
-//         //         countrycolor: "rgb(255,255,255)"
-//         //       }
-//         //     };
+        // Append initial bars
+        var barsGroup = chartGroup.selectAll("bar")
+            .data(data)
+            .enter()
+            .append("bar")
+            .attr("x", d => xLinearScale(d.name))
+            .attr("y", d => yLinearScale(d[chosenYaxis]))
+            .attr("fill", "lightblue")
+            .attr("opacity", ".5");
 
-//         //     Plotly.newPlot("plot", data, layout);
-//     });
-// }
+        // Append x axis
+        chartGroup.append("text")
+            .attr("transform", `translate(${width / 2}, ${height + 20})`)
+            .classed("axis-text", true)
+            .text("Top Songs (2018");
 
-// buildPlot();
+        // // Create group for multiple y axes labels
+        // var labelsGroup = chartGroup.append("g")
+        //     .attr("transform", `translate($)`)
+
+        // var selector = d3.select("#drop1")
+        //     .append("select")
+        //     .attr("id", "dropdown")
+        //     .on("change", function (d) {
+        //         selection = document.getElementById("dropdown");
+        //         selector.selectAll("option")
+        //             .data(elements)
+        //             .enter().append("option")
+        //             .attr("value", function (d) {
+        //                 return d;
+        //             })
+        //             .text(function (d) {
+        //                 return d;
+        //             })
+        //     });
+
+        // Update ToolTip function above json import
+        var barsGroup = updateToolTip(chosenYaxis, barsGroup);
+
+        // Y Axis labels event listener
+        labelsGroup.selectall("text")
+            .on("click", function () {
+                // Get value of selection
+                var value = d3.select(this).attr("value");
+                if (value !== chosenYaxis) {
+                    // Replaces chosen Y axis with value
+                    chosenYaxis = value;
+                    console.log(chosenYaxis)
+
+                    // updates y scale for new data
+                    yLinearScale = yScale(data, chosenYaxis);
+
+                    // updates y axis with transition
+                    yAxis = renderAxes(yLinearScale, yAxis);
+
+                    // updates bars with new y values
+                    barsGroup = renderBars(barsGroup, yLinearScale, chosenYaxis);
+
+                    // updates tooltips with new info
+                    barsGroup = updateToolTip(chosenYaxis, barsGroup);
+
+                    // // changes classes to change bold text
+                    // if (chosenXAxis === "num_albums") {
+                    //     albumsLabel
+                    //         .classed("active", true)
+                    //         .classed("inactive", false);
+                    //     hairLengthLabel
+                    //         .classed("active", false)
+                    //         .classed("inactive", true);
+                    // }
+                    // else {
+                    //     albumsLabel
+                    //         .classed("active", false)
+                    //         .classed("inactive", true);
+                    //     hairLengthLabel
+                    //         .classed("active", true)
+                    //         .classed("inactive", false);
+                    // }
+                }
+            })
+    });
+};
+
+buildPlot();
