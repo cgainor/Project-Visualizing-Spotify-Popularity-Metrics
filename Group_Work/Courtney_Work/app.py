@@ -22,13 +22,8 @@ app = Flask(__name__)
 # Database Setup
 #################################################
 
-# from flask_sqlalchemy import SQLAlchemy
-
 # Connect to Server
 engine = sqlalchemy.create_engine('mysql+pymysql://root:Courtdata8*@127.0.0.1:3306')
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
-
-# db = SQLAlchemy(app)
 
 # Drop db
 engine.execute("DROP DATABASE IF EXISTS spotify_db")
@@ -71,4 +66,4 @@ def home():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
