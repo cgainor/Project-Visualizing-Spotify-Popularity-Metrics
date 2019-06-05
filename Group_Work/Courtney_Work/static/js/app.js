@@ -31,8 +31,8 @@ var chosenYaxis = "danceability";
 // Function used for updating y-scale var upon click on dropdown menu
 function yScale(songData, chosenYaxis) {
     // create scales
-    var yLinearScale = d3.scaleBand()
-        .domain(d3.min(songData, d => d[chosenYaxis]) * 0.8)
+    var yLinearScale = d3.scaleLinear()
+        .domain([d3.min(songData, d => d[chosenYaxis]) * 0.8, d3.max(songData, d => d[chosenYaxis]) * 0.8])
         .range([height, 0]);
     return yLinearScale;
 }
