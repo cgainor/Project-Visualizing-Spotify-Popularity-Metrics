@@ -57,7 +57,7 @@ function renderBars(barsGroup, newYScale, chosenYaxis) {
 }
 
 // Function used for updating bar group with new tooltip
-function updateToolTip(chosenYaxis, barGroup) {
+function updateToolTip(chosenYaxis, barsGroup) {
 
     if (chosenYaxis === "danceability") {
         var label = "Danceability:";
@@ -99,15 +99,16 @@ function updateToolTip(chosenYaxis, barGroup) {
         var label = "Time Signature:";
     }
 
-    var toolTip = d3.tip().attr("class", "tooltip")
+    var toolTip = d3.tip()
+        .attr("class", "tooltip")
         .offset([80, -60])
         .html(function (d) {
             return (`Rank: ${d.id}<br>${d.name}<br>${d.artists}<br>${label} ${d[chosenYaxis]}`);
         });
 
-    barGroup.call(toolTip);
+    barsGroup.call(toolTip);
 
-    barGroup.on("mouseover", function (data) {
+    barsGroup.on("mouseover", function (data) {
         toolTip.show(data);
     })
         // onmouseout event
@@ -118,12 +119,11 @@ function updateToolTip(chosenYaxis, barGroup) {
     return barsGroup;
 }
 
-// try{
 function buildPlot() {
     // Retrieve data from the JSON and execute everything below
     var url = "/api/songs";
     d3.json(url).then(function (response) {
-        console.log(response.song_data[0]);
+        // console.log(response.song_data);
         var data = response.song_data;
 
         // Parse data
@@ -142,29 +142,30 @@ function buildPlot() {
             stuff.tempo = +stuff.tempo;
             stuff.duration_ms = +stuff.duration_ms;
             stuff.time_signature = +stuff.time_signature;
-            console.log(stuff);
+            // console.log(stuff);
         });
-        
+
         // Create x scale function
         var xBandScale = d3.scaleBand()
-            .domain(data.length * 0.8)
-            .range(0, width)
+            .domain(data.map(d => d.name))
+            .range([0, width])
+            .padding(0.1)
 
         // y scale function from earlier
         var yLinearScale = yScale(data, chosenYaxis)
 
         // Create initial axis functions
-        var bottomAxis = d3.axisBottom(xBandScale);
+        var bottomAxis = d3.axisBottom(xBandScale).tickValues([]);
         var leftAxis = d3.axisLeft(yLinearScale);
 
         // Append x axis
-        var xAxis = chartGroup.append("g")
-            .classed("x-axis", true)
+        chartGroup.append("g")
             .attr("transform", `translate(0, ${height})`)
+            // .style("display", "none")
             .call(bottomAxis);
 
         // Append y axis
-        chartGroup.append("g")
+        var yAxis = chartGroup.append("g")
             .call(leftAxis);
 
         // Append initial bars
@@ -172,65 +173,53 @@ function buildPlot() {
             .data(data)
             .enter()
             .append("bar")
-            .attr("x", d => xLinearScale(d.name))
+            .attr("x", d => xBandScale(d.name))
             .attr("y", d => yLinearScale(d[chosenYaxis]))
             .attr("fill", "lightblue")
             .attr("opacity", ".5");
 
-        // Append x axis
+        // Append x axis label
         chartGroup.append("text")
             .attr("transform", `translate(${width / 2}, ${height + 20})`)
             .classed("axis-text", true)
-            .text("Top Songs (2018");
+            .text("Top Songs (2018)");
 
         // Create group for multiple y axes labels
         var labelsGroup = chartGroup.append("g")
-            .attr("transform", `translate($)`)
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .classed("axis-text", true)
+            .text(`${chosenYaxis}`)
 
-        // // Get every column value
-        // var elements = ["danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "duration_ms", "time_signature"]
+        // Update ToolTip function above json import
+        var barsGroup = updateToolTip(chosenYaxis, barsGroup);
 
-        // var selector = d3.select("#drop1")
-        //             .selectAll("option")
-        //             .data(elements)
-        //             .enter().append("option")
-        //             .attr("value", function (d) {
-        //                 return d;
-        //             })
-        //             .text(function (d) {
-        //                 return d;
-        //             })
+        // Y Axis labels event listener
+        labelsGroup.selectAll("text")
+            .on("click", function () {
+                // Get value of selection
+                var value = d3.select(this).attr("value");
+                if (value !== chosenYaxis) {
+                    // Replaces chosen Y axis with value
+                    chosenYaxis = value;
+                    console.log(chosenYaxis)
 
-//         // Update ToolTip function above json import
-//         var barsGroup = updateToolTip(chosenYaxis, barsGroup);
+                    // updates y scale for new data
+                    yLinearScale = yScale(data, chosenYaxis);
 
-//         // Y Axis labels event listener
-//         labelsGroup.selectall("text")
-//             .on("click", function () {
-//                 // Get value of selection
-//                 var value = d3.select(this).attr("value");
-//                 if (value !== chosenYaxis) {
-//                     // Replaces chosen Y axis with value
-//                     chosenYaxis = value;
-//                     console.log(chosenYaxis)
+                    // updates y axis with transition
+                    yAxis = renderAxes(yLinearScale, yAxis);
 
-//                     // updates y scale for new data
-//                     yLinearScale = yScale(data, chosenYaxis);
+                    // updates bars with new y values
+                    barsGroup = renderBars(barsGroup, yLinearScale, chosenYaxis);
 
-//                     // updates y axis with transition
-//                     yAxis = renderAxes(yLinearScale, yAxis);
-
-//                     // updates bars with new y values
-//                     barsGroup = renderBars(barsGroup, yLinearScale, chosenYaxis);
-
-//                     // updates tooltips with new info
-//                     barsGroup = updateToolTip(chosenYaxis, barsGroup);
-                // }
-            // })
-        });
-// };
-// }
-
+                    // updates tooltips with new info
+                    barsGroup = updateToolTip(chosenYaxis, barsGroup);
+                }
+            })
+    });
 }
 
 buildPlot();

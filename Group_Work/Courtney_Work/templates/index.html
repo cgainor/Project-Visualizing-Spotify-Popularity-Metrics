@@ -23,6 +23,19 @@
                 <label>Select a Metric By Clicking The Dropdown Menu</label>
                 <select class="form-control" id="drop1">
                     <option selected>Select Metric</option>
+                    <option>Danceability</option>
+                    <option>Energy</option>
+                    <option>Key</option>
+                    <option>Loudness</option>
+                    <option>Mode</option>
+                    <option>Speechiness</option>
+                    <option>Acousticness</option>
+                    <option>Instrumentalness</option>
+                    <option>Liveness</option>
+                    <option>Valence</option>
+                    <option>Tempo</option>
+                    <option>Duration (ms)</option>
+                    <option>Time Signature</option>
                 </select>
                 <div id="plot1"></div>
             </div>
@@ -44,6 +57,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <!-- <script src="/static/js/app.js"></script> -->
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
