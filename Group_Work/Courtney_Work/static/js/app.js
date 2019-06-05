@@ -99,8 +99,7 @@ function updateToolTip(chosenYaxis, barGroup) {
         var label = "Time Signature:";
     }
 
-    var toolTip = d3.tip()
-        .attr("class", "tooltip")
+    var toolTip = d3.tip().attr("class", "tooltip")
         .offset([80, -60])
         .html(function (d) {
             return (`Rank: ${d.id}<br>${d.name}<br>${d.artists}<br>${label} ${d[chosenYaxis]}`);
@@ -119,15 +118,13 @@ function updateToolTip(chosenYaxis, barGroup) {
     return barsGroup;
 }
 
-
+// try{
 function buildPlot() {
     // Retrieve data from the JSON and execute everything below
     var url = "/api/songs";
-    d3.json(url).then(function (err, response) {
-        if (err) throw err;
-
-        console.log(response);
-        var data = response;
+    d3.json(url).then(function (response) {
+        console.log(response.song_data[0]);
+        var data = response.song_data;
 
         // Parse data
         data.forEach(function (stuff) {
@@ -145,8 +142,9 @@ function buildPlot() {
             stuff.tempo = +stuff.tempo;
             stuff.duration_ms = +stuff.duration_ms;
             stuff.time_signature = +stuff.time_signature;
+            console.log(stuff);
         });
-
+        
         // Create x scale function
         var xBandScale = d3.scaleBand()
             .domain(data.length * 0.8)
@@ -185,16 +183,15 @@ function buildPlot() {
             .classed("axis-text", true)
             .text("Top Songs (2018");
 
-        // // Create group for multiple y axes labels
-        // var labelsGroup = chartGroup.append("g")
-        //     .attr("transform", `translate($)`)
+        // Create group for multiple y axes labels
+        var labelsGroup = chartGroup.append("g")
+            .attr("transform", `translate($)`)
+
+        // // Get every column value
+        // var elements = ["danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "duration_ms", "time_signature"]
 
         // var selector = d3.select("#drop1")
-        //     .append("select")
-        //     .attr("id", "dropdown")
-        //     .on("change", function (d) {
-        //         selection = document.getElementById("dropdown");
-        //         selector.selectAll("option")
+        //             .selectAll("option")
         //             .data(elements)
         //             .enter().append("option")
         //             .attr("value", function (d) {
@@ -203,53 +200,37 @@ function buildPlot() {
         //             .text(function (d) {
         //                 return d;
         //             })
-        //     });
 
-        // Update ToolTip function above json import
-        var barsGroup = updateToolTip(chosenYaxis, barsGroup);
+//         // Update ToolTip function above json import
+//         var barsGroup = updateToolTip(chosenYaxis, barsGroup);
 
-        // Y Axis labels event listener
-        labelsGroup.selectall("text")
-            .on("click", function () {
-                // Get value of selection
-                var value = d3.select(this).attr("value");
-                if (value !== chosenYaxis) {
-                    // Replaces chosen Y axis with value
-                    chosenYaxis = value;
-                    console.log(chosenYaxis)
+//         // Y Axis labels event listener
+//         labelsGroup.selectall("text")
+//             .on("click", function () {
+//                 // Get value of selection
+//                 var value = d3.select(this).attr("value");
+//                 if (value !== chosenYaxis) {
+//                     // Replaces chosen Y axis with value
+//                     chosenYaxis = value;
+//                     console.log(chosenYaxis)
 
-                    // updates y scale for new data
-                    yLinearScale = yScale(data, chosenYaxis);
+//                     // updates y scale for new data
+//                     yLinearScale = yScale(data, chosenYaxis);
 
-                    // updates y axis with transition
-                    yAxis = renderAxes(yLinearScale, yAxis);
+//                     // updates y axis with transition
+//                     yAxis = renderAxes(yLinearScale, yAxis);
 
-                    // updates bars with new y values
-                    barsGroup = renderBars(barsGroup, yLinearScale, chosenYaxis);
+//                     // updates bars with new y values
+//                     barsGroup = renderBars(barsGroup, yLinearScale, chosenYaxis);
 
-                    // updates tooltips with new info
-                    barsGroup = updateToolTip(chosenYaxis, barsGroup);
+//                     // updates tooltips with new info
+//                     barsGroup = updateToolTip(chosenYaxis, barsGroup);
+                // }
+            // })
+        });
+// };
+// }
 
-                    // // changes classes to change bold text
-                    // if (chosenXAxis === "num_albums") {
-                    //     albumsLabel
-                    //         .classed("active", true)
-                    //         .classed("inactive", false);
-                    //     hairLengthLabel
-                    //         .classed("active", false)
-                    //         .classed("inactive", true);
-                    // }
-                    // else {
-                    //     albumsLabel
-                    //         .classed("active", false)
-                    //         .classed("inactive", true);
-                    //     hairLengthLabel
-                    //         .classed("active", true)
-                    //         .classed("inactive", false);
-                    // }
-                }
-            })
-    });
-};
+}
 
 buildPlot();
