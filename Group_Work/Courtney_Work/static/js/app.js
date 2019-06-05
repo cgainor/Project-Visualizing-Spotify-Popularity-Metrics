@@ -52,13 +52,14 @@ function renderBars(barsGroup, newYScale, chosenYaxis) {
     barsGroup.transition()
         .duration(1000)
         .attr("y", d => newYScale(d[chosenYaxis]));
-
+    console.log(barsGroup)
+    console.log(d)
     return barsGroup;
 }
 
 // Function used for updating bar group with new tooltip
 function updateToolTip(chosenYaxis, barsGroup) {
-
+    console.log(chosenYaxis)
     if (chosenYaxis === "danceability") {
         var label = "Danceability:";
     }
@@ -105,7 +106,7 @@ function updateToolTip(chosenYaxis, barsGroup) {
         .html(function (d) {
             return (`Rank: ${d.id}<br>${d.name}<br>${d.artists}<br>${label} ${d[chosenYaxis]}`);
         });
-
+        
     barsGroup.call(toolTip);
 
     barsGroup.on("mouseover", function (data) {
@@ -197,8 +198,8 @@ function buildPlot() {
         var barsGroup = updateToolTip(chosenYaxis, barsGroup);
 
         // Y Axis labels event listener
-        labelsGroup.selectAll("text")
-            .on("click", function () {
+        labelsGroup.selectAll("#drop1")
+            .on("change", function () {
                 // Get value of selection
                 var value = d3.select(this).attr("value");
                 if (value !== chosenYaxis) {
