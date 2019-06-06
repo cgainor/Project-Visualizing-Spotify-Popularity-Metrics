@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head>
+<!--<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head> -->
 <style> /* set the CSS */
 
     body { font: 12px Arial;}
@@ -98,67 +98,6 @@ var randomColor = (function(){
       return '#'+Math.round(r * 255).toString(16)+Math.round(g * 255).toString(16)+Math.round(b * 255).toString(16);
   }; })
 
-/* function updateToolTip(yAxis, circlesGroup) {
-
-if (yAxis === "danceability") {
-  var label = "Danceability:";
-}
-else if (yAxis === "energy") {
-  var label = "Energy:";
-}
-else if (yAxis === "key") {
-  var label = "key";
-}
-else if (yAxis === "loudness") {
-  var label = "loudness";
-}
-else if (yAxis === "mode") {
-  var label = "Mode:";
-}
-else if (yAxis === "speechiness") {
-    var label = "Speechiness:";
-}
-else if (yAxis === "acousticness") {
-    var label = "Acousticness:";
-}
-else if (yAxis === "instrumentalness") {
-    var label = "Instrumentalness:";
-}
-else if (yAxis === "liveness") {
-    var label = "Liveness:";
-}
-else if (yAxis === "valence") {
-    var label = "Valence:";
-}
-else if (yAxis === "tempo") {
-    var label = "Tempo:";
-}
-else if (yAxis === "duration_ms") {
-    var label = "Duration(ms):";
-}
-else if (yAxis === "time_signature") {
-    var label = "Time Signature:";
-}
-
-var toolTip = d3.tip()
-  .attr("class", "tooltip")
-  .offset([80, -60])
-  .html(function(d) {
-    return (`${d.name}<br>${label} ${d[yAxis]}`);
-  });
-
-circlesGroup.call(toolTip);
-
-circlesGroup.on("mouseover", function(data) {
-  toolTip.show(data);
-})
-  // onmouseout event
-  .on("mouseout", function(data, index) {
-    toolTip.hide(data);
-  });
-
-return circlesGroup;
-} */
 
     // set the dimensions and margins of the graph
     var margin = {top: 30, right: 30, bottom: 70, left: 60},
@@ -219,28 +158,7 @@ return circlesGroup;
             .attr("y2", function(d) { return y(d[selectedVar]); })
             .attr("stroke", "grey")
     
-              // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
-  /* var showTooltip = function(d) {
-    tooltip
-      .transition()
-      .duration(200)
-    tooltip
-      .style("opacity", 1)
-      .html("Song: " + d.name + d.artists)
-      .style("left", (d3.mouse(this)[0]+30) + "px")
-      .style("top", (d3.mouse(this)[1]+30) + "px")
-  }
-  var moveTooltip = function(d) {
-    tooltip
-      .style("left", (d3.mouse(this)[0]+30) + "px")
-      .style("top", (d3.mouse(this)[1]+30) + "px")
-  }
-  var hideTooltip = function(d) {
-    tooltip
-      .transition()
-      .duration(200)
-      .style("opacity", 0)
-  } */
+
     
         // variable u: map data to existing circle
         var u = svg.selectAll("circle")

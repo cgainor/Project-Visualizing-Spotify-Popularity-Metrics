@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>404 and the Heartbreaks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron" style="text-align: center">
+            <h1>Spotify's Top 100 2018</h1>
+            <p>Check out what it takes to become a top 100 song on Spotify!</p>
+
+            <div id="wrapper">
+                <div id="letters">
+                  <div class="c">c</div>
+                  <div class="h">h</div>
+                  <div class="o">o</div>
+                  <div class="r">r</div>
+                  <div class="e">e</div>
+                  <div class="o">o</div>
+                  <div class="g">g</div>
+                  <div class="r">r</div>
+                  <div class="a">a</div>
+                  <div class="p">p</div>
+                  <div class="h">h</div>
+                  <div class="e">e</div>
+                  <div class="r">r</div>
+                  <div class="dash">-</div>
+                  <div class="j">j</div>
+                  <div class="s">s</div>
+          
+                  <br />
+                  <div class="line"></div>
+          
+                
+                </div>
+                <div class="scroll-overlay"></div>
+              </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2>CHOOSE METRIC DROPDOWN LIST</h2>
+                <div id="plot"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2>PICK METRIC GRAPH</h2>
+                <!-- Add the Buttons-->
+                <button type="button" class="btn btn-light" onclick="update('danceability')">Danceability</button>
+                <button type="button" class="btn btn-light" onclick="update('energy')">Energy</button>
+                <button type="button" class="btn btn-light" onclick="update('key')">Key</button>
+                <button type="button" class="btn btn-light" onclick="update('speechiness')">Speechiness</button>
+                <button type="button" class="btn btn-light" onclick="update('acousticness')">Acousticness</button>
+                <button type="button" class="btn btn-light" onclick="update('instrumentalness')">Instrumentalness</button>
+                <button type="button" class="btn btn-light" onclick="update('liveness')">Liveness</button>
+                <button type="button" class="btn btn-light" onclick="update('valence')">Valence</button>
+                <button type="button" class="btn btn-light" onclick="update('tempo')">Tempo</button>
+
+                <!-- Add the div for the graph -->
+                <div id="metricCircles"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2><a href="/send">SONG CHECKLIST METRIC GRAPH</a></h2>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="./dist/choreographer.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
