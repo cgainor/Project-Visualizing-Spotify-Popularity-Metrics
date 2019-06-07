@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<!--<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head> -->
+<!-- <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></head> -->
 <style> /* set the CSS */
 
     body { font: 12px Arial;}
@@ -18,32 +18,20 @@
         stroke-width: 1;
         shape-rendering: crispEdges;
     }
-    
-    /* div.tooltip {	
-        position: absolute;			
-        text-align: center;			
-        width: 60px;					
-        height: 28px;					
-        padding: 2px;				
-        font: 12px sans-serif;		
-        background: lightsteelblue;	
-        border: 0px;		
-        border-radius: 8px;			
-        pointer-events: none; } */
         
-        div.tooltip {
-  position: absolute;
-  width: 80px;
-  height: 50px;
-  padding: 10px;
-  font: 12px sans-serif;
-  text-align: center;
-  color: black;
-  background: rgb(182, 180, 180);
-  border: 0;
-  border-radius: 10px;
-  display: none;
-}
+    div.tooltip {
+        position: absolute;
+        width: 80px;
+        height: 50px;
+        padding: 10px;
+        font: 12px sans-serif;
+        text-align: center;
+        color: black;
+        background: rgb(182, 180, 180);
+        border: 0;
+        border-radius: 10px;
+        display: none;
+    }
 
     
     
@@ -98,10 +86,9 @@ var randomColor = (function(){
       return '#'+Math.round(r * 255).toString(16)+Math.round(g * 255).toString(16)+Math.round(b * 255).toString(16);
   }; })
 
-
     // set the dimensions and margins of the graph
     var margin = {top: 30, right: 30, bottom: 70, left: 60},
-        width = 900 - margin.left - margin.right,
+        width = 1200 - margin.left - margin.right,
         height = 800 - margin.top - margin.bottom;
     
     // append the svg object to the body of the page
@@ -130,12 +117,11 @@ var randomColor = (function(){
     // A function that create / update the plot for a given variable:
     function update(selectedVar) {
     
-      // Parse the Data
-      d3.csv("resources/top2018.csv", function(data) {
+    d3.csv("resources/top2018.csv", function(data) {
     
         // X axis
         x.domain(data.map(function(d) { return d.name; }))
-        xAxis.transition().duration(1000).call(d3.axisBottom(x))
+        xAxis.transition().duration(1000).call(d3.axisBottom(x).tickValues([]));
     
         // Add Y axis
         y.domain([0, d3.max(data, function(d) { return +d[selectedVar] }) ]);
@@ -158,7 +144,7 @@ var randomColor = (function(){
             .attr("y2", function(d) { return y(d[selectedVar]); })
             .attr("stroke", "grey")
     
-
+ 
     
         // variable u: map data to existing circle
         var u = svg.selectAll("circle")
@@ -199,13 +185,9 @@ var randomColor = (function(){
 
         });
 
-    }
+    } 
     
-      
-    
-    
-    
-    // Initialize plot
+  // Initialize plot
     update('danceability')
     // updateToolTip()
     
