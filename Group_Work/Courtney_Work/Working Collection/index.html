@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hours of TV Watched Each Month</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <select class="form-control" id="drop1">
+        <option selected>Select Metric</option>
+        <option value = "danceability">Danceability</option>
+        <option value = "energy">Energy</option>
+        <option value = "key">Key</option>
+        <option value = "loudness">Loudness</option>
+        <option value = "mode">Mode</option>
+        <option value = "speechiness">Speechiness</option>
+        <option value = "acousticness">Acousticness</option>
+        <option value = "instrumentalness">Instrumentalness</option>
+        <option value = "liveness">Liveness</option>
+        <option value = "valence">Valence</option>
+        <option value = "tempo">Tempo</option>
+        <option value = "duration_ms">Duration (ms)</option>
+        <option value = "time_signature">Time Signature</option>
+    </select>
+    <div id="plot1"></div>
+  <script src="app.js"></script>
+</body>
+</html>
