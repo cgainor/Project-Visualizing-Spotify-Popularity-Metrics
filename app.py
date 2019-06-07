@@ -53,7 +53,7 @@ engine.execute('CREATE TABLE spotify_songs (\
    time_signature INT);')
 
 # Open CSV using Pandas
-spotify_csv = "resources/top2018.csv"
+spotify_csv = "top2018.csv"
 spotify_df = pd.read_csv(spotify_csv)
 spotify_df = spotify_df.rename(columns={'id': "spotify_id"})
 
