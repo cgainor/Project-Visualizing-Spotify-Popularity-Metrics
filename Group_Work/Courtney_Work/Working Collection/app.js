@@ -127,10 +127,14 @@ function updateToolTip(chosenYaxis, barsGroup) {
 
 function buildPlot() {
     // Load data from top2018.csv
-    d3.csv("top2018.csv", function (error, songData) {
-        if (error) throw error;
+    // d3.csv("top2018.csv", function (error, songData) {
+    //     if (error) throw error;
+    var url = "/api/songs";
+    d3.json(url, function (response) {
+        // console.log(response.song_data);
+        var songData = response.song_data;
 
-        console.log(songData);
+        // console.log(songData);
         // Parse data
         songData.forEach(function (stuff) {
             //stuff.id = +stuff.id;
