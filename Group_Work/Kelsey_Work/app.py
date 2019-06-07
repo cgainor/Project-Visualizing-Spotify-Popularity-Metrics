@@ -60,5 +60,9 @@ engine.execute('CREATE TABLE spotify_songs (\
 def home():
     return render_template("index.html")
 
+@app.route("/metrics")
+def metrics():
+    return render_template("graph_attempt.html")
+
 if __name__ == "__main__":
     app.run()
