@@ -31,7 +31,7 @@ var chosenYaxis = "danceability";
 function yScale(songData, chosenYaxis) {
     // Create scales
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(songData, d => d[chosenYaxis]) * 0.8])
+        .domain([0, d3.max(songData, d => d[chosenYaxis]) * 1.8])
         .range([chartHeight, 0]);
     return yLinearScale;
 }
