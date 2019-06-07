@@ -31,7 +31,7 @@ var chosenYaxis = "danceability";
 function yScale(songData, chosenYaxis) {
     // Create scales
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(songData, d => d[chosenYaxis]) * 1.8])
+        .domain([0, d3.max(songData, d => d[chosenYaxis]) * 1.2])
         .range([chartHeight, 0]);
     return yLinearScale;
 }
@@ -50,9 +50,7 @@ function renderBars(barsGroup, newYScale, chosenYaxis) {
     barsGroup.transition()
         .duration(1000)
         .attr("y", d => newYScale(d[chosenYaxis]))
-        //.attr("width", xBandScale.bandwidth())
         .attr("height", d => chartHeight - newYScale(d[chosenYaxis]));
-    //console.log(barsGroup)
     return barsGroup;
 }
 
