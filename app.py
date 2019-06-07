@@ -36,7 +36,7 @@ engine.execute("USE spotify_db")
 engine.execute('CREATE TABLE spotify_songs (\
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,\
    spotify_id VARCHAR (40),\
-    `name` VARCHAR (80),\
+   `name` VARCHAR (80),\
    artists VARCHAR (40),\
    danceability FLOAT,\
    energy FLOAT,\
